@@ -1,0 +1,15 @@
+@font-face {
+        font-family: 'MyFont';
+        src: url('./FontAwesome.otf') format('otf');
+        font-weight: 600;
+        font-style: normal;
+}
+
+.hello {
+        color: red;
+        font-family: 'MyFont',
+}
+
+img{
+        width: 100%
+}
