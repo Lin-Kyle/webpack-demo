@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -8,15 +9,22 @@ module.exports = {
                 app: './src/index.js',
                 // print: './src/print.js'
         },
+        devtool: 'inline-source-map',
+        devServer: {
+                contentBase: path.resolve(__dirname, 'dist'),
+                hot: true,
+                port: 9000
+        },
         plugins: [
                 new CleanWebpackPlugin(['dist']),
                 new HtmlWebpackPlugin({title: 'Output Management'}),
+                // new UglifyJSPlugin(),
                 new webpack.NamedModulesPlugin(),
                 new webpack.HotModuleReplacementPlugin()
         ],
         module: {
                 rules: [
-                        {
+                        /*{
                                 test: /\.js$/,
                                 exclude: /(node_modules|bower_components)/,
                                 use: {
@@ -25,7 +33,8 @@ module.exports = {
                                                 presets: ["es2015"]
                                         }
                                 }
-                        }, {
+                        }, */
+                        {
                                 test: /\.css$/,
                                 use: ['style-loader', 'css-loader']
                         }, {

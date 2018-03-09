@@ -1,10 +1,12 @@
+const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
         devtool: 'inline-source-map',
         devServer: {
-                contentBase: './dist',
-                hot: true
+                contentBase: path.resolve(__dirname, 'dist'),
+                hot: true,
+                port: 9000
         }
 })
