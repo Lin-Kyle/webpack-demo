@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
+// console.log(path.resolve(__dirname, '../src/'));
 module.exports = {
         entry: {
                 app: './src/index.js',
@@ -17,14 +18,16 @@ module.exports = {
         module: {
                 rules: [
                         {
-                                test: /\.js$/,
-                                exclude: /(node_modules|bower_components)/,
-                                use: {
-                                        loader: 'babel-loader',
-                                        query: {
-                                                presets: ["es2015"]
+                                test: /\.(js|jsx)$/,
+                                exclude: /node_modules/,
+                                use: [
+                                        {
+                                                loader: 'babel-loader',
+                                                options: {
+                                                        presets: ['es2015', 'react']
+                                                }
                                         }
-                                }
+                                ]
                         }, {
                                 test: /\.css$/,
                                 use: ['style-loader', 'css-loader']
@@ -47,5 +50,18 @@ module.exports = {
                 filename: '[name].bundle.js',
                 path: path.resolve(__dirname, 'dist'),
                 // publicPath: path.resolve(__dirname, 'dist')
+        },
+        resolve: {
+                extensions: [
+                        '.js', '.jsx', '.json', '.coffee'
+                ],
+                alias: {
+                        // @: focusPath(''),
+                        // Components: focusPath('components'),
+                        Css: path.resolve(__dirname, '../src/assets/css') 
+                }
         }
 }
+/*function focusPath(path) {
+        return path.join(__dirname, '../src/' + path)
+}*/

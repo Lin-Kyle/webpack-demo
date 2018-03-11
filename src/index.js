@@ -1,30 +1,20 @@
-import {cube} from './math.js';
-import printMe from './print.js';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-if (process.env.NODE_ENV !== 'production') {
-        console.log(process.env.NODE_ENV);
-}
+import {AppContainer} from 'react-hot-loader';
 
-function component() {
-        var element = document.createElement('div');
-        var btn = document.createElement('button');
+import Cpt from './components';
 
-        element.innerHTML = [
-                'Hello webpack!', '5 cubed is equal to ' + cube(5)
-        ].join('\n\n');
 
-        btn.innerHTML = 'Click me and check the console!';
-        btn.onclick = printMe;
-        element.appendChild(btn);
-
-        return element;
-}
-
-document.body.appendChild(component());
+const render = (Component) => {
+        ReactDOM.render(<AppContainer>
+                <Component/>
+        </AppContainer>, document.body)
+};
+render(Cpt);
 
 if (module.hot) {
-        module.hot.accept('./print.js', function() {
-                console.log('updated');
-                printMe();
-        })
+        module.hot.accept('./components', () => {
+                render(Cpt)
+        });
 }
