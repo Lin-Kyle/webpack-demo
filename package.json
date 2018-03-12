@@ -22,6 +22,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-loadable": "^5.3.1",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -37,8 +38,8 @@
     "xml-loader": "^1.2.1"
   },
   "scripts": {
-    "start": "npx webpack-dev-server --open --config ./config/webpack.dev.js --mode development",
-    "build": "npx webpack --config ./config/webpack.dev.js --mode production",
+    "start": "npx webpack-dev-server --open --config ./config/webpack.dev.js",
+    "build": "npx webpack --config ./config/webpack.dev.js",
     "server": "node server.js"
   },
   "author": "",

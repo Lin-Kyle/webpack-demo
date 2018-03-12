@@ -45,6 +45,21 @@ module.exports = {
                         }
                 ]
         },
+        optimization: {
+                runtimeChunk: {
+                        name: "manifest"
+                },
+                splitChunks: {
+                        cacheGroups: {
+                                vendor: {
+                                        test: /[\\/]node_modules[\\/]/,
+                                        name: 'vendors',
+                                        priority: -20,
+                                        chunks: 'all'
+                                }
+                        }
+                }
+        },
         output: {
                 filename: '[name].bundle.js',
                 path: path.resolve(__dirname, '../dist'),
@@ -57,10 +72,12 @@ module.exports = {
                 alias: {
                         // @: focusPath(''),
                         // Components: focusPath('components'),
-                        Css: path.resolve(__dirname, '../src/assets/css')
+                        Css: focusPath('assets/css'),
+                        Js: focusPath('assets/js'),
+                        Component: focusPath('components')
                 }
         }
 }
-/*function focusPath(path) {
-        return path.join(__dirname, '../src/' + path)
-}*/
+function focusPath(_path) {
+        return path.resolve(__dirname, '../src/' + _path)
+}

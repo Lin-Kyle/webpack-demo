@@ -1,20 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'Css/style.css';
+import Loadable from 'react-loadable';
+import MyLoadingComponent from 'Component/LoadingComponent.jsx';
 
-class Square extends React.Component {
-        constructor() {
-                super();
-                this.state = {
-                        value: 1234567890
-                };
-        }
+const LoadableSquareComponent = Loadable({
+        loader: () => import ('Component/square.jsx'),
+        loading: MyLoadingComponent,
+        delay: 300
+})
 
+class App extends React.Component {
         render() {
-                return (<button className="square" onClick={() => this.setState({value: 'X'})}>
-                        {this.state.value}
-                </button>);
-        }
+                return <LoadableSquareComponent/>
+        }  
 }
 
-export default Square;
+export default App;
