@@ -1,19 +1,19 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
         entry: {
-                app: './src/index.js',
-                // print: './src/print.js'
+                app: [// 'webpack-dev-server/client?http://0.0.0.0:9000',
+                        //  'react-hot-loader/patch',
+                        './src/index.js'],
+                vendor: ['react-router']
         },
-        plugins: [
-                new CleanWebpackPlugin(['dist']),
-                new HtmlWebpackPlugin({template: 'index.html'}),
-                new webpack.NamedModulesPlugin(),
-                new webpack.HotModuleReplacementPlugin()
-        ],
+        output: {
+                path: path.resolve(__dirname, '../dist'),
+                // publicPath: path.resolve(__dirname, 'dist')
+        },
+        plugins: [],
         module: {
                 rules: [
                         {
@@ -46,6 +46,7 @@ module.exports = {
                 ]
         },
         optimization: {
+                minimize: true,
                 runtimeChunk: {
                         name: "manifest"
                 },
@@ -53,25 +54,18 @@ module.exports = {
                         cacheGroups: {
                                 vendor: {
                                         test: /[\\/]node_modules[\\/]/,
-                                        name: 'vendors',
+                                        name: 'vendor',
                                         priority: -20,
                                         chunks: 'all'
                                 }
                         }
                 }
         },
-        output: {
-                filename: '[name].bundle.js',
-                path: path.resolve(__dirname, '../dist'),
-                // publicPath: path.resolve(__dirname, 'dist')
-        },
         resolve: {
                 extensions: [
                         '.js', '.jsx', '.json', '.coffee'
                 ],
                 alias: {
-                        // @: focusPath(''),
-                        // Components: focusPath('components'),
                         Css: focusPath('assets/css'),
                         Js: focusPath('assets/js'),
                         Component: focusPath('components')

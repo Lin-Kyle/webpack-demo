@@ -9,7 +9,7 @@ const render = (Component) => {
         ReactDOM.render(<AppContainer>
                 <Component/>
         </AppContainer>, document.getElementById('app'))
-};
+}; 
 render(Cpt);
 
 if (module.hot) {

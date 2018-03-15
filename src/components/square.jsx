@@ -6,9 +6,9 @@ class Square extends React.Component {
         constructor() {
                 super();
                 this.state = {
-                        value: 1234567890
+                        value: 1234567890 
                 };
-        } 
+        }
 
         render() {
                 return (<button className="square" onClick={() => this.setState({value: 'X'})}>

@@ -12,7 +12,7 @@ const LoadableSquareComponent = Loadable({
 class App extends React.Component {
         render() {
                 return <LoadableSquareComponent/>
-        }  
+        }
 }
 
 export default App;

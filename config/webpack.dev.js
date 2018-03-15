@@ -1,6 +1,8 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const common = require('./webpack.common.js');
 
@@ -12,5 +14,11 @@ module.exports = merge(common, {
                 hot: true,
                 port: 9000
         },
-        plugins: []
+        output: {
+                filename: '[name].[hash].js',
+        },
+        plugins: [
+                new webpack.NamedModulesPlugin(),
+                new webpack.HotModuleReplacementPlugin()
+        ],
 })
