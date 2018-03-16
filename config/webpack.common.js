@@ -4,16 +4,35 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
         entry: {
-                app: [// 'webpack-dev-server/client?http://0.0.0.0:9000',
-                        //  'react-hot-loader/patch',
-                        './src/index.js'],
-                vendor: ['react-router']
+                index: './src/index.js',
+                // polyfills: './src/polyfills.js',
+                vendor: ['react', 'react-dom', 'react-router']
         },
         output: {
                 path: path.resolve(__dirname, '../dist'),
                 // publicPath: path.resolve(__dirname, 'dist')
         },
-        plugins: [],
+        plugins: [
+                new webpack.ProvidePlugin({
+
+                })
+        ],
+        optimization: {
+                minimize: true,
+                splitChunks: {
+                        cacheGroups: {
+                                vendor: {
+                                        test: /[\\/]node_modules[\\/]/,
+                                        name: 'vendor',
+                                        priority: -20,
+                                        chunks: 'all'
+                                }
+                        }
+                },
+                runtimeChunk: {
+                        name: "manifest"
+                }
+        },
         module: {
                 rules: [
                         {
@@ -44,22 +63,6 @@ module.exports = {
                                 use: ['xml-loader']
                         }
                 ]
-        },
-        optimization: {
-                minimize: true,
-                runtimeChunk: {
-                        name: "manifest"
-                },
-                splitChunks: {
-                        cacheGroups: {
-                                vendor: {
-                                        test: /[\\/]node_modules[\\/]/,
-                                        name: 'vendor',
-                                        priority: -20,
-                                        chunks: 'all'
-                                }
-                        }
-                }
         },
         resolve: {
                 extensions: [
