@@ -53,6 +53,14 @@
     "build": "npx webpack --config ./config/webpack.prod.js",
     "server": "http-server dist"
   },
+  "browserslist": [
+    "defaults",
+    "not ie < 11",
+    "last 2 versions",
+    "> 1%",
+    "iOS 7",
+    "last 3 iOS versions"
+  ],
   "author": "",
   "license": "ISC"
 }
