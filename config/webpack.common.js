@@ -1,9 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css');
-const extractSASS = new ExtractTextPlugin('stylesheets/[name]-two.css');
 const postcssLoader = {
         loader: 'postcss-loader',
         options: {
@@ -61,29 +58,10 @@ module.exports = {
                                         {
                                                 loader: 'url-loader',
                                                 options: {
-                                                        limit: 10000,
-                                                        publicPath: '/'
+                                                        limit: 10000
                                                 }
                                         }
                                 ]
-                        }, {
-                                test: /\.css$/,
-                                include: [
-                                        focusPath('assets/css'), focusPath('components')
-                                ],
-                                // use: extractCSS.extract(['css-loader', 'postcss-loader'])
-                                use: ['style-loader', 'css-loader']
-                        }, {
-                                test: /\.scss$/,
-                                include: [
-                                        focusPath('assets/css'), focusPath('components')
-                                ],
-                                /*use: ExtractTextPlugin.extract({
-                                        fallback: 'style-loader',
-                                        use: ['css-loader', 'sass-loader']
-                                })*/
-                                // use: extractSASS.extract(['css-loader', 'sass-loader'])
-                                use: ['style-loader', 'css-loader', 'sass-loader', postcssLoader]
                         }, {
                                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                                 include: [focusPath('assets/font')],
@@ -104,20 +82,10 @@ module.exports = {
                         }, {
                                 test: /\.(html)$/i,
                                 // use: ['html-loader']
-                        }/*, {
-                                loader: 'postcss-loader',
-                                options: {
-                                        config: {
-                                                path: './config/postcss.config.js'
-                                        }
-                                }
-                        }*/
+                        }
                 ]
         },
-        plugins: [
-                new webpack.ProvidePlugin({}),
-                /* extractCSS, extractSASS */
-        ],
+        plugins: [new webpack.ProvidePlugin({})],
         resolve: {
                 extensions: [
                         '.js', '.jsx', '.json', '.coffee'
