@@ -7,16 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const extractCSS = new MiniCssExtractPlugin({filename: "[name].css", chunkFilename: "[name].css"});
 const extractSCSS = new MiniCssExtractPlugin({filename: "[name].scss", chunkFilename: "[name].scss"});
 
-const postcssLoader = {
-        loader: 'postcss-loader',
-        options: {
-                config: {
-                        path: focusPath('../config/postcss.config.js') // 这个得在项目根目录创建此文件
-                }
-        }
-};
-
 const common = require('./webpack.common.js');
+const util = require('./util.js');
 
 module.exports = merge(common, {
         mode: "production",
@@ -32,15 +24,15 @@ module.exports = merge(common, {
                         {
                                 test: /\.scss$/,
                                 include: [
-                                        focusPath('assets/css'), focusPath('components')
+                                        util.focusPath('assets/css'), util.focusPath('components')
                                 ],
-                                use: [MiniCssExtractPlugin.loader, 'css-loader', postcssLoader, 'sass-loader']
+                                use: [MiniCssExtractPlugin.loader, 'css-loader', util.postcssLoader, 'sass-loader']
                         }, {
                                 test: /\.css$/,
                                 include: [
-                                        focusPath('assets/css'), focusPath('components')
+                                        util.focusPath('assets/css'), util.focusPath('components')
                                 ],
-                                use: [MiniCssExtractPlugin.loader, 'css-loader', postcssLoader]
+                                use: [MiniCssExtractPlugin.loader, 'css-loader', util.postcssLoader]
                         }
                 ]
         },
@@ -55,7 +47,3 @@ module.exports = merge(common, {
                 extractCSS
         ]
 })
-
-function focusPath(_path) {
-        return path.resolve(__dirname, '../src/' + _path)
-}

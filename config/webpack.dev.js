@@ -5,15 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const common = require('./webpack.common.js');
+const util = require('./util.js');
 
-const postcssLoader = {
-        loader: 'postcss-loader',
-        options: {
-                config: {
-                        path: focusPath('../config/postcss.config.js') // 这个得在项目根目录创建此文件
-                }
-        }
-};
 module.exports = merge(common, {
         mode: "development",
         devtool: 'inline-source-map',
@@ -38,20 +31,20 @@ module.exports = merge(common, {
                         {
                                 test: /\.scss$/,
                                 include: [
-                                        focusPath('assets/css'), focusPath('components')
+                                        util.focusPath('assets/css'), util.focusPath('components')
                                 ],
-                                use: ['style-loader', 'css-loader', postcssLoader, 'sass-loader']
+                                use: ['style-loader', 'css-loader', util.postcssLoader, 'sass-loader']
                         }, {
                                 test: /\.css$/,
                                 include: [
-                                        focusPath('assets/css'), focusPath('components')
+                                        util.focusPath('assets/css'), util.focusPath('components')
                                 ],
-                                use: ['style-loader', 'css-loader', postcssLoader]
+                                use: ['style-loader', 'css-loader', util.postcssLoader]
                         }
                 ]
         }
 })
 
-function focusPath(_path) {
+function util.focusPath(_path) {
         return path.resolve(__dirname, '../src/' + _path)
 }

@@ -1,0 +1,23 @@
+.img1,
+.img2 {
+  width: 400px;
+  height: 400px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain; }
+
+.img1 {
+  background-image: url(bc2cf3fbbea5c729e78a648d5d140765.jpg); }
+
+.img2 {
+  background-image: url(6fed4c716e9008e503359db0e4e68e65.jpg); }
+
+html button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: red; }
+
+
+/*# sourceMappingURL=0.css.map*/

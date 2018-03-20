@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 
 const common = require('./webpack.common.js');
+const util = require('./util.js');
 
 module.exports = merge(common, {
         mode: "development",
@@ -28,15 +29,15 @@ module.exports = merge(common, {
                         {
                                 test: /\.scss$/,
                                 include: [
-                                        focusPath('assets/css'), focusPath('components')
+                                        util.focusPath('assets/css'), util.focusPath('components')
                                 ],
-                                use: ['style-loader', 'css-loader', postcssLoader, 'sass-loader']
+                                use: ['style-loader', 'css-loader', util.postcssLoader, 'sass-loader']
                         }, {
                                 test: /\.css$/,
                                 include: [
-                                        focusPath('assets/css'), focusPath('components')
+                                        util.focusPath('assets/css'), util.focusPath('components')
                                 ],
-                                use: ['style-loader', 'css-loader', postcssLoader]
+                                use: ['style-loader', 'css-loader', util.postcssLoader]
                         }
                 ]
         }

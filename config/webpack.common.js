@@ -1,14 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-
-const postcssLoader = {
-        loader: 'postcss-loader',
-        options: {
-                config: {
-                        path: focusPath('../config/postcss.config.js') // 这个得在项目根目录创建此文件
-                }
-        }
-};
+const util = require('./util.js');
 
 module.exports = {
         entry: {
@@ -40,7 +32,7 @@ module.exports = {
                         {
                                 test: /\.(js|jsx)$/,
                                 exclude: /node_modules/,
-                                include: [focusPath('')],
+                                include: [util.focusPath('')],
                                 use: [
                                         {
                                                 loader: 'babel-loader',
@@ -52,7 +44,7 @@ module.exports = {
                         }, {
                                 test: /\.(png|jpg|jpeg|gif)$/i,
                                 include: [
-                                        focusPath('assets'), focusPath('components')
+                                        util.focusPath('assets'), util.focusPath('components')
                                 ],
                                 use: [
                                         {
@@ -64,7 +56,7 @@ module.exports = {
                                 ]
                         }, {
                                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                                include: [focusPath('assets/font')],
+                                include: [util.focusPath('assets/font')],
                                 use: [
                                         {
                                                 loader: 'url-loader',
@@ -91,13 +83,13 @@ module.exports = {
                         '.js', '.jsx', '.json', '.coffee'
                 ],
                 alias: {
-                        Css: focusPath('assets/css'),
-                        Js: focusPath('assets/js'),
-                        Component: focusPath('components')
+                        Css: util.focusPath('assets/css'),
+                        Js: util.focusPath('assets/js'),
+                        Component: util.focusPath('components')
                 }
         }
 }
 
-function focusPath(_path) {
+function util.focusPath(_path) {
         return path.resolve(__dirname, '../src/' + _path)
 }
