@@ -13,17 +13,17 @@ const config = require('./config.js');
 const webpackConfig = merge(common, {
         mode: config.build.mode,
         devtool: config.build.productionSourceMap
-                ? 'source-map'
+                ? config.build.devtool
                 : false,
         entry: {
-                index: config.build.index
+                // index: config.build.entry
         },
         output: {
                 path: config.build.assetsRoot,
                 filename: utils.assetsPath('[name].[chunkhash:8].js'),
                 chunkFilename: utils.assetsPath('js.[id].[chunkhash].js')
         },
-        /*module: {
+        module: {
                 rules: [
                         {
                                 test: /\.scss$/,
@@ -39,7 +39,7 @@ const webpackConfig = merge(common, {
                                 use: [MiniCssExtractPlugin.loader, 'css-loader', util.postcssLoader]
                         }
                 ]
-        },*/
+        },
         plugins: [
                 new CleanWebpackPlugin(['dist/*'], {
                         root: path.resolve(__dirname, '../'),
@@ -47,7 +47,9 @@ const webpackConfig = merge(common, {
                         dry: false
                 }),
                 new HtmlWebpackPlugin({
-                        filename: config.build.index,
+                        filename: process.env.NODE_ENV === 'testing'
+                                ? 'index.html'
+                                : config.build.index,
                         template: 'index.html',
                         inject: true,
                         chunksSortMode: 'dependency',
@@ -59,14 +61,30 @@ const webpackConfig = merge(common, {
                 }),
                 new webpack.HashedModuleIdsPlugin(),
                 new MiniCssExtractPlugin({filename: utils.assetsPath("css/[name].[contenthash].css"), chunkFilename: "[name].css"}),
-                new CopyWebpackPlugin([
+                /*new CopyWebpackPlugin([
                         {
                                 from: path.resolve(__dirname, '../static'),
                                 to: config.build.assetsSubDirectory,
                                 ignore: ['.*']
                         }
-                ])
-        ]
+                ])*/
+        ],
+        optimization: {
+                minimize: true,
+                splitChunks: {
+                        cacheGroups: {
+                                vendor: {
+                                        test: /[\\/]node_modules[\\/]/,
+                                        name: 'vendor',
+                                        priority: -20,
+                                        chunks: 'all'
+                                }
+                        }
+                },
+                runtimeChunk: {
+                        name: "manifest"
+                }
+        }
 })
 
 if (config.build.productionGzip) {

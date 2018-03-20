@@ -1,12 +1,33 @@
 const path = require('path')
-const config = require('../config')
+const config = require('./config')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+exports.postcssLoader = {
+        loader: 'postcss-loader',
+        options: {
+                config: {
+                        path: path.resolve(__dirname, 'postcss.config.js')
+                }
+        }
+}
+
+exports.focusPath = function(_path) {
+        return path.resolve(__dirname, '../src/' + _path)
+}
+
 exports.assetsPath = function(_path) {
-        console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV);
         const assetsSubDirectory = process.env.NODE_ENV === 'production'
                 ? config.build.assetsSubDirectory
-                : config.dev.assetsSubDirectory;
+                : config.build.assetsSubDirectory;
+        console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV, assetsSubDirectory, _path);
+        return path.posix.join(assetsSubDirectory, _path);
+}
+
+exports.assetsPath = function(_path) {
+        const assetsSubDirectory = process.env.NODE_ENV === 'production'
+                ? config.build.assetsSubDirectory
+                : config.build.assetsSubDirectory;
+        console.log('process.env.NODE_ENV: ' + process.env.NODE_ENV, assetsSubDirectory, _path);
         return path.posix.join(assetsSubDirectory, _path);
 }
 

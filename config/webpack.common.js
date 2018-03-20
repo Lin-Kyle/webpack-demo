@@ -1,7 +1,7 @@
+'use strict'
 const path = require('path');
-const webpack = require('webpack');
+const utils = require('./utils.js');
 const config = require('./config.js');
-const util = require('./util.js');
 
 function resolve(dir) {
         return path.join(__dirname, '..', dir)
@@ -9,6 +9,7 @@ function resolve(dir) {
 
 module.exports = {
         entry: {
+                index: './src/main.js'
                 // polyfills: './src/polyfills.js',
                 vendor: ['react', 'react-dom', 'react-router']
         },
@@ -17,32 +18,17 @@ module.exports = {
                 filename: '[name].js',
                 publicPath: process.env.NODE_ENV === 'production'
                         ? config.build.assetsPublicPath
-                        : config.dev.assetsPublicPath
+                        : config.build.assetsPublicPath
         },
         resolve: {
                 extensions: [
-                        '.js', '.jsx', '.json', '.coffee'
+                        '.js', '.jsx', '.json'
                 ],
                 alias: {
+                        '@': resolve('src'),
                         Css: util.focusPath('assets/css'),
                         Js: util.focusPath('assets/js'),
                         Component: util.focusPath('components')
-                }
-        },
-        optimization: {
-                minimize: true,
-                splitChunks: {
-                        cacheGroups: {
-                                vendor: {
-                                        test: /[\\/]node_modules[\\/]/,
-                                        name: 'vendor',
-                                        priority: -20,
-                                        chunks: 'all'
-                                }
-                        }
-                },
-                runtimeChunk: {
-                        name: "manifest"
                 }
         },
         module: {
@@ -88,8 +74,4 @@ module.exports = {
                         }
                 ]
         }
-}
-
-function util.focusPath(_path) {
-        return path.resolve(__dirname, '../src/' + _path)
 }
