@@ -1,6 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const config = require('./config.js');
 const util = require('./util.js');
+
+function resolve(dir) {
+        return path.join(__dirname, '..', dir)
+}
 
 module.exports = {
         entry: {
@@ -8,8 +13,21 @@ module.exports = {
                 vendor: ['react', 'react-dom', 'react-router']
         },
         output: {
-                path: path.resolve(__dirname, '../dist'),
-                // publicPath: path.resolve(__dirname, 'dist')
+                path: config.build.assetsRoot,
+                filename: '[name].js',
+                publicPath: process.env.NODE_ENV === 'production'
+                        ? config.build.assetsPublicPath
+                        : config.dev.assetsPublicPath
+        },
+        resolve: {
+                extensions: [
+                        '.js', '.jsx', '.json', '.coffee'
+                ],
+                alias: {
+                        Css: util.focusPath('assets/css'),
+                        Js: util.focusPath('assets/js'),
+                        Component: util.focusPath('components')
+                }
         },
         optimization: {
                 minimize: true,
@@ -32,7 +50,7 @@ module.exports = {
                         {
                                 test: /\.(js|jsx)$/,
                                 exclude: /node_modules/,
-                                include: [util.focusPath('')],
+                                include: [resolve('src')],
                                 use: [
                                         {
                                                 loader: 'babel-loader',
@@ -50,7 +68,8 @@ module.exports = {
                                         {
                                                 loader: 'url-loader',
                                                 options: {
-                                                        limit: 10000
+                                                        limit: 10000,
+                                                        name: utils.assetsPath('img/[name].[hash:7].[ext]')
                                                 }
                                         }
                                 ]
@@ -61,32 +80,13 @@ module.exports = {
                                         {
                                                 loader: 'url-loader',
                                                 options: {
-                                                        limit: 10000
+                                                        limit: 10000,
+                                                        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
                                                 }
                                         }
                                 ]
-                        }, {
-                                test: /\.(csv|tsv)$/,
-                                use: ['csv-loader']
-                        }, {
-                                test: /\.xml$/,
-                                use: ['xml-loader']
-                        }, {
-                                test: /\.(html)$/i,
-                                // use: ['html-loader']
                         }
                 ]
-        },
-        plugins: [new webpack.ProvidePlugin({})],
-        resolve: {
-                extensions: [
-                        '.js', '.jsx', '.json', '.coffee'
-                ],
-                alias: {
-                        Css: util.focusPath('assets/css'),
-                        Js: util.focusPath('assets/js'),
-                        Component: util.focusPath('components')
-                }
         }
 }
 

@@ -4,22 +4,26 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const extractCSS = new MiniCssExtractPlugin({filename: "[name].css", chunkFilename: "[name].css"});
-const extractSCSS = new MiniCssExtractPlugin({filename: "[name].scss", chunkFilename: "[name].scss"});
 
 const common = require('./webpack.common.js');
 const util = require('./util.js');
+const utils = require('./utils.js');
+const config = require('./config.js');
 
-module.exports = merge(common, {
-        mode: "production",
-        devtool: 'source-map',
+const webpackConfig = merge(common, {
+        mode: config.build.mode,
+        devtool: config.build.productionSourceMap
+                ? 'source-map'
+                : false,
         entry: {
-                index: ['./src/index.js']
+                index: config.build.index
         },
         output: {
-                filename: '[name].[chunkhash:8].js'
+                path: config.build.assetsRoot,
+                filename: utils.assetsPath('[name].[chunkhash:8].js'),
+                chunkFilename: utils.assetsPath('js.[id].[chunkhash].js')
         },
-        module: {
+        /*module: {
                 rules: [
                         {
                                 test: /\.scss$/,
@@ -35,15 +39,51 @@ module.exports = merge(common, {
                                 use: [MiniCssExtractPlugin.loader, 'css-loader', util.postcssLoader]
                         }
                 ]
-        },
+        },*/
         plugins: [
                 new CleanWebpackPlugin(['dist/*'], {
                         root: path.resolve(__dirname, '../'),
                         verbose: true,
                         dry: false
                 }),
-                new HtmlWebpackPlugin({template: 'index.html'}),
+                new HtmlWebpackPlugin({
+                        filename: config.build.index,
+                        template: 'index.html',
+                        inject: true,
+                        chunksSortMode: 'dependency',
+                        minify: {
+                                removeComments: true,
+                                collapseWhitespace: true,
+                                removeAttributeQuotes: true
+                        }
+                }),
                 new webpack.HashedModuleIdsPlugin(),
-                extractCSS
+                new MiniCssExtractPlugin({filename: utils.assetsPath("css/[name].[contenthash].css"), chunkFilename: "[name].css"}),
+                new CopyWebpackPlugin([
+                        {
+                                from: path.resolve(__dirname, '../static'),
+                                to: config.build.assetsSubDirectory,
+                                ignore: ['.*']
+                        }
+                ])
         ]
 })
+
+if (config.build.productionGzip) {
+        const CompressionWebpackPlugin = require('compression-webpack-plugin');
+
+        webpackConfig.plugins.push(new CompressionWebpackPlugin({
+                asset: '[path].gz[query]',
+                algorithm: 'gzip',
+                test: new RegExp('\\.(' + config.build.productionGzipExtensions.join('|') + ')$'),
+                threshold: 10240,
+                minRatio: 0.8
+        }))
+}
+
+if (config.build.bundleAnalyzerReport) {
+        const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+        webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+}
+
+module.exports = webpackConfig
