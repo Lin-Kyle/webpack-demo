@@ -1,5 +1,5 @@
 .img1,
-.img2{
+.img2 {
         width: 400px;
         height: 400px;
         background-repeat: no-repeat;
@@ -7,16 +7,23 @@
         background-size: contain;
 }
 
-.img1{
-        background-image: url(../img/2.jpg);
-}
-.img2{
-        background-image: url(../img/1.jpg);
+.img1 {
+        background-image: url("../img/2.jpg");
 }
 
-html{
-        button{
+.img2 {
+        background-image: url("../img/1.jpg");
+}
+@font-face {
+        font-family: 'MyFont';
+        src: url("../font/FontAwesome.otf") format('otf');
+        font-weight: 600;
+        font-style: normal;
+}
+
+html {
+        button {
                 display: flex;
-                background-color: red
+                background-color: red;
         }
 }

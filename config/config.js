@@ -4,9 +4,9 @@ module.exports = {
         build: {
                 mode: "production",
                 index: path.resolve(__dirname, '../dist/index.html'),
-                entry: ['./src/index.js'],
+                entry: ['./src/main.js'],
                 assetsRoot: path.resolve(__dirname, '../dist'),
-                assetsSubDirectory: './',
+                assetsSubDirectory: 'static',
                 assetsPublicPath: './',
                 devtool: 'source-map',
                 productionSourceMap: true,

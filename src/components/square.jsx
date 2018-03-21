@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'Css/style.scss';
-
+import img from 'Img/1.jpg';
+console.log(img);
 class Square extends React.Component {
         constructor() {
                 super();
@@ -12,12 +13,13 @@ class Square extends React.Component {
 
         render() {
                 return (<div>
-                        <div className='img1'></div>
-                        <div className='img2'></div>
-                        <button className="square" onClick={() => this.setState({value: 'X'})}>
-                                {this.state.value}
-                        </button>
-                </div>);
+                        <img src={img}/>
+                <div className='img1'></div>
+                <div className='img2'></div>
+                <button className="square" onClick={() => this.setState({value: 'X'})}>
+                        {this.state.value}
+                </button>
+        </div>);
         }
 }
 

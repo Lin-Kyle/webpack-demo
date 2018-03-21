@@ -6,7 +6,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const common = require('./webpack.common.js');
-const util = require('./util.js');
 const utils = require('./utils.js');
 const config = require('./config.js');
 
@@ -16,33 +15,34 @@ const webpackConfig = merge(common, {
                 ? config.build.devtool
                 : false,
         entry: {
-                // index: config.build.entry
+                index: config.build.entry
         },
         output: {
                 path: config.build.assetsRoot,
-                filename: utils.assetsPath('[name].[chunkhash:8].js'),
-                chunkFilename: utils.assetsPath('js.[id].[chunkhash].js')
+                filename: utils.assetsPath('js/[name].[chunkhash:8].js'),
+                chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
+                publicPath: utils.assetsPath('../')
         },
         module: {
                 rules: [
                         {
                                 test: /\.scss$/,
                                 include: [
-                                        util.focusPath('assets/css'), util.focusPath('components')
+                                        utils.resolve('assets/css'), utils.resolve('components')
                                 ],
-                                use: [MiniCssExtractPlugin.loader, 'css-loader', util.postcssLoader, 'sass-loader']
+                                use: [MiniCssExtractPlugin.loader, 'css-loader', utils.postcssLoader, 'sass-loader']
                         }, {
                                 test: /\.css$/,
                                 include: [
-                                        util.focusPath('assets/css'), util.focusPath('components')
+                                        utils.resolve('assets/css'), utils.resolve('components')
                                 ],
-                                use: [MiniCssExtractPlugin.loader, 'css-loader', util.postcssLoader]
+                                use: [MiniCssExtractPlugin.loader, 'css-loader', utils.postcssLoader]
                         }
                 ]
         },
         plugins: [
                 new CleanWebpackPlugin(['dist/*'], {
-                        root: path.resolve(__dirname, '../'),
+                        root: utils.resolve(''),
                         verbose: true,
                         dry: false
                 }),
@@ -60,7 +60,7 @@ const webpackConfig = merge(common, {
                         }
                 }),
                 new webpack.HashedModuleIdsPlugin(),
-                new MiniCssExtractPlugin({filename: utils.assetsPath("css/[name].[contenthash].css"), chunkFilename: "[name].css"}),
+                new MiniCssExtractPlugin({filename: utils.assetsPath("static/css/[name].[chunkhash:8].css"), chunkFilename: "static/css/[name].[chunkhash:8].css"}),
                 /*new CopyWebpackPlugin([
                         {
                                 from: path.resolve(__dirname, '../static'),

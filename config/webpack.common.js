@@ -3,32 +3,28 @@ const path = require('path');
 const utils = require('./utils.js');
 const config = require('./config.js');
 
-function resolve(dir) {
-        return path.join(__dirname, '..', dir)
-}
-
 module.exports = {
         entry: {
-                index: './src/main.js'
                 // polyfills: './src/polyfills.js',
                 vendor: ['react', 'react-dom', 'react-router']
         },
-        output: {
+        /*output: {
                 path: config.build.assetsRoot,
                 filename: '[name].js',
                 publicPath: process.env.NODE_ENV === 'production'
                         ? config.build.assetsPublicPath
                         : config.build.assetsPublicPath
-        },
+        },*/
         resolve: {
                 extensions: [
                         '.js', '.jsx', '.json'
                 ],
                 alias: {
-                        '@': resolve('src'),
-                        Css: util.focusPath('assets/css'),
-                        Js: util.focusPath('assets/js'),
-                        Component: util.focusPath('components')
+                        '@': utils.resolve(''),
+                        Css: utils.resolve('assets/css'),
+                        Img: utils.resolve('assets/img'),
+                        Js: utils.resolve('assets/js'),
+                        Component: utils.resolve('components')
                 }
         },
         module: {
@@ -36,7 +32,7 @@ module.exports = {
                         {
                                 test: /\.(js|jsx)$/,
                                 exclude: /node_modules/,
-                                include: [resolve('src')],
+                                include: [utils.resolve('')],
                                 use: [
                                         {
                                                 loader: 'babel-loader',
@@ -48,29 +44,40 @@ module.exports = {
                         }, {
                                 test: /\.(png|jpg|jpeg|gif)$/i,
                                 include: [
-                                        util.focusPath('assets'), util.focusPath('components')
+                                        utils.resolve('assets'), utils.resolve('components')
                                 ],
                                 use: [
                                         {
                                                 loader: 'url-loader',
                                                 options: {
                                                         limit: 10000,
-                                                        name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                                                        name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+                                                        // publicPath: '../../'
                                                 }
                                         }
                                 ]
                         }, {
                                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                                include: [util.focusPath('assets/font')],
+                                include: [utils.resolve('assets/font')],
                                 use: [
                                         {
                                                 loader: 'url-loader',
                                                 options: {
                                                         limit: 10000,
-                                                        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                                                        name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+                                                        publicPath: utils.assetsPath('../../../')
                                                 }
                                         }
                                 ]
+                        }, {
+                                test: /\.(html)$/,
+                                use: {
+                                        loader: 'html-loader',
+                                        options: {
+                                                attrs: [':data-src'],
+                                                // publicPath: utils.assetsPath('../../../')
+                                        }
+                                }
                         }
                 ]
         }

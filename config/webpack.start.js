@@ -29,13 +29,13 @@ module.exports = merge(common, {
                         {
                                 test: /\.scss$/,
                                 include: [
-                                        util.focusPath('assets/css'), util.focusPath('components')
+                                        util.resolve('assets/css'), util.resolve('components')
                                 ],
                                 use: ['style-loader', 'css-loader', util.postcssLoader, 'sass-loader']
                         }, {
                                 test: /\.css$/,
                                 include: [
-                                        util.focusPath('assets/css'), util.focusPath('components')
+                                        util.resolve('assets/css'), util.resolve('components')
                                 ],
                                 use: ['style-loader', 'css-loader', util.postcssLoader]
                         }
