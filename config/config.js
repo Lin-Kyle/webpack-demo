@@ -6,7 +6,7 @@ module.exports = {
                 index: path.resolve(__dirname, '../dist/index.html'),
                 entry: ['./src/main.js'],
                 assetsRoot: path.resolve(__dirname, '../dist'),
-                assetsSubDirectory: 'static',
+                assetsSubDirectory: 'assets',
                 assetsPublicPath: './',
                 devtool: 'source-map',
                 productionSourceMap: true,
@@ -15,5 +15,18 @@ module.exports = {
                         '.js', '.jsx', '.json'
                 ],
                 bundleAnalyzerReport: process.env.npm_config_report
+        },
+
+        dev: {
+                mode: "development",
+                port: 4000,
+                assetsSubDirectory: 'static',
+                assetsPublicPath: '/',
+                proxyTable: {
+                        '/api': {
+                                target: 'http://localhost:4000'
+                        }
+                },
+                cssSourceMap: false
         }
 }

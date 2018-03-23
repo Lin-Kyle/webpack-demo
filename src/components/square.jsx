@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'Css/style.scss';
-import img from 'Img/0.jpg';
-console.log(img);
+import img from '../assets/img/0.jpg';
+
 class Square extends React.Component {
         constructor() {
                 super();

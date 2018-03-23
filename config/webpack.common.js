@@ -8,13 +8,15 @@ module.exports = {
                 // polyfills: './src/polyfills.js',
                 vendor: ['react', 'react-dom', 'react-router']
         },
-        /*output: {
+        output: {
                 path: config.build.assetsRoot,
-                filename: '[name].js',
+                pathinfo: true,
+                filename: utils.assetsPath('js/[name].[chunkhash].js'),
+                chunkFilename: utils.assetsPath('js/[name].[chunkhash].js'),
                 publicPath: process.env.NODE_ENV === 'production'
                         ? config.build.assetsPublicPath
                         : config.build.assetsPublicPath
-        },*/
+        },
         resolve: {
                 extensions: [
                         '.js', '.jsx', '.json'
@@ -42,17 +44,36 @@ module.exports = {
                                         }
                                 ]
                         }, {
-                                test: /\.(png|jpg|jpeg|gif)$/i,
-                                include: [
-                                        utils.resolve('assets'), utils.resolve('components')
-                                ],
+                                test: /\.(gif|png|jpe?g|svg)$/i,
                                 use: [
                                         {
                                                 loader: 'url-loader',
                                                 options: {
-                                                        limit: 10000,
-                                                        name: utils.assetsPath('img/[name].[hash:7].[ext]'),
-                                                        // publicPath: '../../'
+                                                        limit: 200 * 1024,
+                                                        name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                                                }
+                                        }, {
+                                                loader: 'image-webpack-loader',
+                                                options: {
+                                                        mozjpeg: {
+                                                                progressive: true,
+                                                                quality: 65
+                                                        },
+                                                        // optipng.enabled: false will disable optipng
+                                                        optipng: {
+                                                                enabled: false
+                                                        },
+                                                        pngquant: {
+                                                                quality: '65-90',
+                                                                speed: 4
+                                                        },
+                                                        gifsicle: {
+                                                                interlaced: false
+                                                        },
+                                                        // the webp option will enable WEBP
+                                                        webp: {
+                                                                quality: 75
+                                                        }
                                                 }
                                         }
                                 ]
@@ -63,7 +84,7 @@ module.exports = {
                                         {
                                                 loader: 'url-loader',
                                                 options: {
-                                                        limit: 10000,
+                                                        limit: 10 * 1024,
                                                         name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
                                                         publicPath: utils.assetsPath('../../../')
                                                 }
@@ -73,10 +94,7 @@ module.exports = {
                                 test: /\.(html)$/,
                                 use: {
                                         loader: 'html-loader',
-                                        options: {
-                                                attrs: [':data-src'],
-                                                // publicPath: utils.assetsPath('../../../')
-                                        }
+                                        options: {}
                                 }
                         }
                 ]

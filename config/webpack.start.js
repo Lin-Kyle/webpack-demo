@@ -1,27 +1,41 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 const common = require('./webpack.common.js');
 const util = require('./util.js');
 
-module.exports = merge(common, {
+const config = merge(common, {
         mode: "development",
-        devtool: 'inline-source-map',
-        entry: {
+        devtool: '#cheap-module-eval-source-map',
+        /*entry: {
                 index: ['webpack-dev-server/client?http://localhost:4000', 'react-hot-loader/patch', './src/index.js']
-        },
-        devServer: {
+        },*/
+        /*devServer: {
                 contentBase: path.resolve(__dirname, '../dist'),
                 hot: true,
                 port: 4000
-        },
-        output: {
+        },*/
+        /*output: {
                 // filename: '[name].[hash:8].js',
                 filename: '[name].bundle.js'
-        },
+        },*/
         plugins: [
-                new webpack.NamedModulesPlugin(), new webpack.HotModuleReplacementPlugin()
+                new webpack.DefinePlugin({'process.env.NODE_ENV': '"development"'}),
+                new FriendlyErrorsPlugin(),
+                new webpack.NamedModulesPlugin(),
+                new webpack.HotModuleReplacementPlugin(),
+                new webpack.NoEmitOnErrorsPlugin(),
+                new HtmlWebpackPlugin({
+                        chunks: [
+                                'vendor', 'app'
+                        ],
+                        filename: 'index.html',
+                        template: 'src/index.html',
+                        inject: true
+                })
         ],
 
         module: {
@@ -42,3 +56,9 @@ module.exports = merge(common, {
                 ]
         }
 })
+
+Object.keys(config.entry).forEach(function(name) {
+    config.entry[name] = ['react-hot-loader/patch', 'webpack-hot-middleware/client?reload=true&noInfo=false'].concat(config.entry[name])
+})
+
+module.exports = config
